@@ -270,6 +270,22 @@ namespace lcm.CoypProjiect {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void singleCheckBox_CheckedChanged(object sender, EventArgs e) {
+            if (singleCheckBox.Checked) {//选中时
+             
+                setAllProCheckState(false);
+
+            } else {
+
+                setAllProCheckState(true);
+            }
+        }
+
 
         private void setImageImpState(bool flag) {
             if (!flag) {
@@ -281,15 +297,31 @@ namespace lcm.CoypProjiect {
             imageFlag.Checked = flag;
             imageName.Enabled = flag;
             impImageButton.Enabled = flag;
-
-
-
         }
+
+        private void Allbutton_Click(object sender, EventArgs e) {
+            if (AllproCheck.CheckedItems.Count < 4) {//判断多项列表没有全选
+                for (int i = 0; i < AllproCheck.Items.Count; i++) {
+                    AllproCheck.SetItemChecked(i, true);
+                }
+            } else {//全选了就全部取消
+                for (int i = 0; i < AllproCheck.Items.Count; i++) {
+                    AllproCheck.SetItemChecked(i, false);
+                }
+            }
+        }
+
         private void setAllProCheckState(bool flag) {
             //设置All程式文件夹
             AllproCheck.Enabled = flag;
             //设置All程式全选按钮
             Allbutton.Enabled = flag;
+            AllcheckBox.Checked = flag;
+
+            singleCheckBox.Checked = !flag;
+            proCheck.Enabled = !flag;
+            allPro.Enabled = !flag;
+
         }
 
         private void setTpCheckState(bool flag) {
@@ -304,6 +336,7 @@ namespace lcm.CoypProjiect {
             //设置All程式全选按钮
             TPbutton.Enabled = flag;
         }
+
 
     }
 }

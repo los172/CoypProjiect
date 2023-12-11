@@ -33,6 +33,7 @@
             this.sufBox = new System.Windows.Forms.ComboBox();
             this.ButCopy = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.singleCheckBox = new System.Windows.Forms.CheckBox();
             this.allPro = new System.Windows.Forms.Button();
             this.proCheck = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.TPcheckBox = new System.Windows.Forms.CheckBox();
             this.TPName = new System.Windows.Forms.ComboBox();
             this.TPbutton = new System.Windows.Forms.Button();
-            this.singleCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -105,6 +105,7 @@
             this.Allbutton.TabIndex = 13;
             this.Allbutton.Text = "全选";
             this.Allbutton.UseVisualStyleBackColor = true;
+            this.Allbutton.Click += new System.EventHandler(this.Allbutton_Click);
             // 
             // AllproCheck
             // 
@@ -168,6 +169,17 @@
             this.groupBox3.Size = new System.Drawing.Size(103, 119);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
+            // 
+            // singleCheckBox
+            // 
+            this.singleCheckBox.AutoSize = true;
+            this.singleCheckBox.Location = new System.Drawing.Point(6, 0);
+            this.singleCheckBox.Name = "singleCheckBox";
+            this.singleCheckBox.Size = new System.Drawing.Size(50, 19);
+            this.singleCheckBox.TabIndex = 12;
+            this.singleCheckBox.Text = "程式";
+            this.singleCheckBox.UseVisualStyleBackColor = true;
+            this.singleCheckBox.CheckedChanged += new System.EventHandler(this.singleCheckBox_CheckedChanged);
             // 
             // allPro
             // 
@@ -318,16 +330,6 @@
             this.TPbutton.TabIndex = 9;
             this.TPbutton.Text = "导入TP";
             this.TPbutton.UseVisualStyleBackColor = true;
-            // 
-            // singleCheckBox
-            // 
-            this.singleCheckBox.AutoSize = true;
-            this.singleCheckBox.Location = new System.Drawing.Point(6, 0);
-            this.singleCheckBox.Name = "singleCheckBox";
-            this.singleCheckBox.Size = new System.Drawing.Size(50, 19);
-            this.singleCheckBox.TabIndex = 12;
-            this.singleCheckBox.Text = "程式";
-            this.singleCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
