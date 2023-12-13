@@ -115,56 +115,80 @@ namespace lcm.CoypProjiect {
         }
 
         private async void ButCopy_Click(object sender, EventArgs e) {
-            //后缀
-            int count = proCheck.CheckedItems.Count;
-            if (count == 0) {
-                MessageBox.Show("请选择项目");
-                return;
-            }
+            FtpUtil ftpUtil = new FtpUtil();
 
-            //名称
-            string name =  bodyName.Text;
-
-            //站点
-            string sitre = sufBox.Text;
-            //if (sitre == null || sitre == "") {
-            //    MessageBox.Show("站点不能为空");
-            //    return;
-            //}
-
-
-       
-            //前缀
-            if (preBox.Text == null || preBox.Text == "") {
-                MessageBox.Show("前缀不能为空");
-                return;
-            }
-            string pre = preBox.Text == PublicConstant.NO ? "" : preBox.Text;
-
-            //文件名
-            Dictionary<string, string> fileTypeNames = new Dictionary<string, string>();
-            try {
-
-
-                for (int i = 0; i < count; i++) {
-                    string type = proCheck.CheckedItems[i].ToString();
-                    if (publicConstant.proName[0].Equals(type)){//program
-                        fileTypeNames.Add(type, PublicUtils.GetFileName(pre, name, sitre, publicConstant.pro27014[type]));
-                    } else {//其他
-                        String preVal = pre.Split(PublicConstant.SPACE).Length > 1 ? pre.Split(PublicConstant.SPACE)[1] : pre;
-                        fileTypeNames.Add(type, PublicUtils.GetFileName(preVal, name,  publicConstant.pro27014[type]));
-                    }
-
-
+            //判断是导入单个还是全部
+            if (singleCheckBox.Checked) { //单个
+                                          //后缀
+                int count = proCheck.CheckedItems.Count;
+                if (count == 0) {
+                    MessageBox.Show("请选择项目");
+                    return;
                 }
-            } catch (Exception ex) {
-                MessageBox.Show(ex.Message);
+
+                //名称
+                string name = bodyName.Text;
+
+                //站点
+                string sitre = sufBox.Text;
+
+
+
+
+                //前缀
+                if (preBox.Text == null || preBox.Text == "") {
+                    MessageBox.Show("前缀不能为空");
+                    return;
+                }
+                string pre = preBox.Text == PublicConstant.NO ? "" : preBox.Text;
+                //文件名
+                Dictionary<string, string> fileTypeNames = new Dictionary<string, string>();
+                try {
+
+
+                    for (int i = 0; i < count; i++) {
+                        string type = proCheck.CheckedItems[i].ToString();
+                        if (publicConstant.proName[0].Equals(type)) {//program
+                            fileTypeNames.Add(type, PublicUtils.GetFileName(pre, name, sitre, publicConstant.pro27014[type]));
+                        } else {//其他
+                            String preVal = pre.Split(PublicConstant.SPACE).Length > 1 ? pre.Split(PublicConstant.SPACE)[1] : pre;
+                            fileTypeNames.Add(type, PublicUtils.GetFileName(preVal, name, publicConstant.pro27014[type]));
+                        }
+                    }
+                } catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+                logBox.AppendText(PublicUtils.GetTime() + "本地路径" + FormInit.LocalPath + "\n");
+                bool dowFlag = await ftpUtil.DownloadFile(FormInit.LocalPath, fileTypeNames, folderPathDow, logBox);
+                logBox.AppendText(folderPathDow + "\n");
+                if (dowFlag) {
+                    MessageBox.Show("下载完成");
+                }
+            } else if (AllcheckBox.Checked) { //全部
+                int count = AllproCheck.CheckedItems.Count;
+                if (count == 0) {
+                    MessageBox.Show("请选择项目");
+                    return;
+                }
+                MessageBox.Show("全部");
+              
+                for (int i = 0; i < count; i++) {
+                    string type = AllproCheck.CheckedItems[i].ToString();
+                    bool dowFlag = await ftpUtil.DownloadFiles(FormInit.LocalPath+"/"+ type , folderPathDow + "/"+type, logBox);
+                    if(!dowFlag) {
+                        MessageBox.Show(type + " 下载失败");
+                    } 
+
+                    //if (publicConstant.proName[0].Equals(type)) {//program
+
+                    //} else {//其他
+                    //    String preVal = pre.Split(PublicConstant.SPACE).Length > 1 ? pre.Split(PublicConstant.SPACE)[1] : pre;
+                    //}
+                }
+            } else {
+                MessageBox.Show("请选择导入方式");
             }
-            logBox.AppendText(PublicUtils.GetTime()+"本地路径"+FormInit.LocalPath+"\n");
-            bool dowFlag =  await new FtpUtil().DownloadFile(FormInit.LocalPath, fileTypeNames, folderPathDow,logBox);
-            if (dowFlag) {
-                MessageBox.Show("下载完成");
-            } 
+
 
 
         }
@@ -241,11 +265,11 @@ namespace lcm.CoypProjiect {
         }
         private void AllcheckBox_CheckedChanged(object sender, EventArgs e) {
             if (AllcheckBox.Checked) {//选中时
-                if (folderPathDow.Length <= 0) {
-                    MessageBox.Show("先选中类型！");
-                    AllcheckBox.Checked = false;
-                    return;
-                }
+                //if (folderPathDow.Length <= 0) {
+                //    MessageBox.Show("先选中类型！");
+                //    AllcheckBox.Checked = false;
+                //    return;
+                //}
 
                 setAllProCheckState(true);
 
@@ -337,6 +361,8 @@ namespace lcm.CoypProjiect {
             TPbutton.Enabled = flag;
         }
 
+        private void Form1_Load(object sender, EventArgs e) {
 
+        }
     }
 }

@@ -177,9 +177,9 @@ namespace lcm.CoypProjiect.Utils {
         /// <param name="localPath"></param>
         /// <param name="remotePath"></param>
         /// <returns></returns>
-        public async Task<bool> DownloadFiles(string host, string userName, string passWord, string localPath, string remotePath) {
+        public async Task<bool> DownloadFiles( string localPath, string remotePath, RichTextBox logBox) {
             try {
-                using (var client =  GetIp(host, "21", userName, passWord)) {
+                using (var client = GetIp(FormInit.IP, "21", FormInit.User, FormInit.Password)) {
 
                     await client.ConnectAsync();
                     //判断文件夹是否存在
@@ -196,7 +196,7 @@ namespace lcm.CoypProjiect.Utils {
                             //创建本地文件夹
                             System.IO.Directory.CreateDirectory(localPath + "\\" + file.Name);
                             //递归调用
-                            await DownloadFiles(host, userName, passWord, localPath + "\\" + file.Name, remotePath + "/" + file.Name);
+                            await DownloadFiles( localPath + "\\" + file.Name, remotePath + "/" + file.Name, logBox);
                            
                         } else {
                             //下载文件
